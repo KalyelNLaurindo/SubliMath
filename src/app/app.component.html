@@ -1,51 +1,52 @@
 <div class="min-h-screen bg-background text-primary flex flex-col items-center p-4">
-    <!-- Cabeçalho -->
-    <div class="flex justify-between w-full max-w-lg mb-4">
-      <button class="text-2xl">⚙️</button>
-      <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center">
-        <img src="https://via.placeholder.com/50" alt="Perfil" class="rounded-full" />
-      </div>
-    </div>
-  
-    <!-- Tela da calculadora -->
-    <div class="bg-primary w-full max-w-lg h-screenHeight rounded-lg flex items-center justify-end px-4 text-screenText text-xl font-bold mb-4">
-      0
-    </div>
-  
-    <!-- Router Outlet -->
-    <router-outlet></router-outlet>
-  
-    <!-- Botões -->
-    <div class="grid gap-2 w-full max-w-lg grid-cols-mobile sm:grid-cols-mobile lg:grid-cols-desktop">
-      <!-- Linha 1 -->
-      <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">(</button>
-      <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">)</button>
-      <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">%</button>
-      <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">AC</button>
-  
-      <!-- Linha 2 -->
-      <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">7</button>
-      <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">8</button>
-      <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">9</button>
-      <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">÷</button>
-  
-      <!-- Linha 3 -->
-      <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">4</button>
-      <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">5</button>
-      <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">6</button>
-      <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">x</button>
-  
-      <!-- Linha 4 -->
-      <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">1</button>
-      <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">2</button>
-      <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">3</button>
-      <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">-</button>
-  
-      <!-- Linha 5 -->
-      <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">0</button>
-      <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">.</button>
-      <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">=</button>
-      <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">+</button>
+  <!-- Cabeçalho -->
+  <div class="flex justify-between w-full max-w-lg mb-4">
+    <!-- Botão de Configurações -->
+    <button class="text-2xl">⚙️</button>
+    <!-- Imagem de Perfil -->
+    <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center">
+      <img src="https://via.placeholder.com/50" alt="Perfil" class="rounded-full" />
     </div>
   </div>
-  
+
+  <!-- Tela da Calculadora -->
+  <div class="bg-primary w-full max-w-lg h-screenHeight rounded-lg flex items-center justify-end px-4 text-screenText text-xl font-bold mb-4">
+    0 <!-- Display inicial -->
+  </div>
+
+  <!-- Router Outlet -->
+  <router-outlet></router-outlet> <!-- Componente filho será carregado aqui -->
+
+  <!-- Botões -->
+  <div class="grid gap-2 w-full max-w-lg grid-cols-mobile sm:grid-cols-mobile lg:grid-cols-desktop">
+    <!-- Linha 1 -->
+    <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">(</button>
+    <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">)</button>
+    <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">%</button>
+    <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">AC</button>
+
+    <!-- Linha 2 -->
+    <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">7</button>
+    <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">8</button>
+    <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">9</button>
+    <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">÷</button>
+
+    <!-- Linha 3 -->
+    <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">4</button>
+    <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">5</button>
+    <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">6</button>
+    <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">x</button>
+
+    <!-- Linha 4 -->
+    <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">1</button>
+    <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">2</button>
+    <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">3</button>
+    <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">-</button>
+
+    <!-- Linha 5 -->
+    <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">0</button>
+    <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">.</button>
+    <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">=</button>
+    <button class="bg-button hover:bg-buttonHover text-primary w-full py-4 rounded-lg text-lg font-bold">+</button>
+  </div>
+</div>

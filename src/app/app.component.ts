@@ -3,11 +3,11 @@ import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  standalone: true, // Marcando como standalone
-  imports: [RouterOutlet], // Importando funcionalidades necessárias
+  standalone: true, // Marcando o componente como standalone
+  imports: [RouterOutlet], // Importando o RouterOutlet para renderizar rotas
   templateUrl: './app.component.html', // HTML do componente
   styleUrls: ['./app.component.css'], // CSS do componente
 })
 export class AppComponent {
-  title = 'SupremaCalculadora';
+  title = 'SupremaCalculadora'; // Título da aplicação
 }

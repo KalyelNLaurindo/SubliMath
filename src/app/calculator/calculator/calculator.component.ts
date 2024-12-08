@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+// Importa math.js para cálculos mais seguros (opcional)
+import { evaluate } from 'mathjs';
 
 @Component({
   selector: 'app-calculator',
@@ -46,10 +48,10 @@ export class CalculatorComponent {
         this.appendToDisplay(button.label);
         break;
       case this.ButtonType.Operator:
-        this.appendToDisplay(` ${button.label} `); // Adiciona espaços ao redor dos operadores
+        this.appendOperator(button.label);
         break;
       case this.ButtonType.Clear:
-        this.clearDisplay();
+        this.clearLastEntry();
         break;
       case this.ButtonType.Equals:
         this.evaluateExpression();
@@ -58,7 +60,7 @@ export class CalculatorComponent {
   }
 
   /**
-   * Adiciona valores à tela
+   * Adiciona números ou outros valores ao display
    * @param value Valor a ser adicionado
    */
   private appendToDisplay(value: string): void {
@@ -66,27 +68,48 @@ export class CalculatorComponent {
   }
 
   /**
-   * Limpa a tela
+   * Adiciona operadores, verificando se o último caractere já é um operador
+   * @param operator Operador a ser adicionado
    */
-  private clearDisplay(): void {
-    this.display = '';
+  private appendOperator(operator: string): void {
+    if (/[+\-×÷]$/.test(this.display.trim())) {
+      return; // Evita operadores consecutivos
+    }
+    this.display += ` ${operator} `;
   }
 
   /**
-   * Avalia a expressão na tela
+   * Remove o último caractere inserido ou limpa o display se estiver vazio
+   */
+  private clearLastEntry(): void {
+    if (this.display.length > 0) {
+      this.display = this.display.slice(0, -1).trim();
+    } else {
+      this.display = '';
+    }
+  }
+
+  /**
+   * Avalia a expressão atual no display
    */
   private evaluateExpression(): void {
     try {
+      if (!this.display.trim()) {
+        this.display = 'Erro'; // Evita avaliação com entrada vazia
+        return;
+      }
+
       // Substitui operadores visuais por operadores válidos no JavaScript
       const sanitizedExpression = this.display
         .replace(/÷/g, '/')
         .replace(/×/g, '*');
 
-      // Calcula a expressão de forma segura (substitua `eval` por outra biblioteca se possível)
-      const result = Function(`"use strict"; return (${sanitizedExpression})`)();
-      this.display = result.toString();
+      // Usa math.js para avaliar a expressão de forma segura
+      const result = evaluate(sanitizedExpression);
+
+      this.display = result.toString(); // Converte o resultado para string
     } catch (error) {
-      this.display = 'Erro'; // Mostra mensagem de erro em caso de cálculo inválido
+      this.display = 'Erro'; // Mostra mensagem de erro em caso de falha
     }
   }
 }
