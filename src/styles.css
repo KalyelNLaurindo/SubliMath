@@ -1,3 +1,47 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Estilo global para o body */
+body {
+  @apply bg-black text-pink-300 font-sans antialiased;
+  margin: 0;
+  padding: 0;
+}
+
+/* Estilo global para botões */
+button {
+  @apply bg-gray-700 hover:bg-gray-600 text-pink-300 rounded-lg font-bold transition-all;
+}
+
+/* Estilo para a tela de saída da calculadora */
+.calculator-screen {
+  @apply bg-pink-300 text-black text-xl font-bold px-4 h-20 rounded-lg flex items-center justify-end;
+}
+
+/* Estilo para o cabeçalho */
+.header {
+  @apply flex justify-between w-full max-w-lg mb-4;
+}
+
+/* Estilo para a imagem de perfil */
+.profile-image {
+  @apply w-12 h-12 rounded-full bg-pink-500 flex items-center justify-center;
+}
+
+/* Grid de botões */
+.calculator-buttons {
+  @apply grid gap-2 w-full max-w-lg;
+}
+
+@media (min-width: 1024px) {
+  .calculator-buttons {
+    @apply grid-cols-6;
+  }
+}
+
+@media (max-width: 1024px) {
+  .calculator-buttons {
+    @apply grid-cols-4;
+  }
+}
