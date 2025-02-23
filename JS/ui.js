@@ -1,118 +1,118 @@
-/******************************************************
- * ui.js
- * Responsável pela manipulação do DOM, captura de eventos,
- * exibição do resultado e integração com Calculator e Storage.
- ******************************************************/
+class CalculatorUI {
+  constructor() {
+    this.calculator = new Calculator();
+    this.customStorageManager = new CustomStorageManager();
+    this.currentExpression = '';
+    this.history = this.customStorageManager.loadHistory();
+    this.initializeUI();
+  }
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Instâncias das classes
-    const calculator = new Calculator();
-    const storageManager = new StorageManager();
-  
-    // Obtem elementos
-    const display = document.getElementById('display');
-    const toggleDegRadBtn = document.getElementById('toggleDegRad');
-  
-    // Carrega histórico (se precisar exibir em algum local futuramente)
-    let history = storageManager.loadHistory();
-  
-    // Variável para armazenar expressão atual
-    let currentExpression = '';
-  
-    /**
-     * Atualiza o conteúdo do display.
-     * @param {string} value
-     */
-    function updateDisplay(value) {
-      display.value = value;
+  initializeUI() {
+    this.display = document.getElementById('display');
+    this.degRadButton = document.getElementById('toggleDegRad');
+    this.bindEvents();
+  }
+
+  bindEvents() {
+    document.addEventListener('keydown', this.handleKeyPress.bind(this));
+    document.addEventListener('DOMContentLoaded', this.onDOMReady.bind(this));
+  }
+
+  handleKeyPress(event) {
+    const keyHandlers = {
+      numeric: (key) => !isNaN(key) || '+-*/().'.includes(key),
+      Enter: () => this.calculateResult(),
+      Backspace: () => this.backspace(),
+      Escape: () => this.clearDisplay()
+    };
+
+    if (keyHandlers.numeric(event.key)) {
+      this.appendToDisplay(event.key);
+    } else {
+      keyHandlers[event.key]?.();
     }
-  
-    /**
-     * Adiciona valor ao display e à expressão atual.
-     * @param {string} value
-     */
-    function appendToDisplay(value) {
-      Logger.info(`Adicionando valor ao display: ${value}`);
+  }
+
+  updateDisplay(value) {
+    this.display.value = value;
+    return this;
+  }
+
+  appendToDisplay(value) {
+    const expressionBuilder = new ExpressionBuilder(this.currentExpression);
+    this.currentExpression = expressionBuilder
+      .append(value === 'Ans' ? (this.display.value || '0') : value)
+      .build();
       
-      if (value === 'Ans') {
-        // 'Ans' se refere ao último valor do display
-        currentExpression += display.value || '0';
-      } else {
-        currentExpression += value;
-      }
-      updateDisplay(currentExpression);
+    return this.updateDisplay(this.currentExpression);
+  }
+
+  clearDisplay() {
+    this.currentExpression = '';
+    return this.updateDisplay('');
+  }
+
+  backspace() {
+    this.currentExpression = this.currentExpression.slice(0, -1);
+    return this.updateDisplay(this.currentExpression);
+  }
+
+  calculateResult() {
+    try {
+      const result = this.calculator.evaluateExpression(this.currentExpression);
+      this.updateDisplayAndHistory(result);
+      return true;
+    } catch (error) {
+      return this.handleCalculationError(error);
     }
-  
-    /**
-     * Limpa o display e a expressão.
-     */
-    function clearDisplay() {
-      Logger.info('Limpando display...');
-      currentExpression = '';
-      updateDisplay('');
-    }
-  
-    /**
-     * Apaga o último caractere da expressão.
-     */
-    function backspace() {
-      Logger.info('Backspace acionado.');
-      currentExpression = currentExpression.slice(0, -1);
-      updateDisplay(currentExpression);
-    }
-  
-    /**
-     * Calcula o resultado da expressão atual.
-     */
-    function calculateResult() {
-      Logger.info(`Calculando expressão: ${currentExpression}`);
-      try {
-        const result = calculator.evaluateExpression(currentExpression);
-        updateDisplay(result);
-        currentExpression = result.toString();
-  
-        // Salva no histórico
-        history.push(`${currentExpression} = ${result}`);
-        storageManager.saveHistory(history);
-  
-      } catch (error) {
-        Logger.error(`Erro no cálculo: ${error.message}`);
-        updateDisplay('Erro');
-      }
-    }
-  
-    /**
-     * Alterna entre graus e radianos.
-     */
-    function toggleDegrees() {
-      calculator.toggleDegrees();
-      toggleDegRadBtn.innerText = calculator.isDegrees ? 'Deg' : 'Rad';
-    }
-  
-    /**
-     * Trata eventos de teclado.
-     */
-    document.addEventListener('keydown', (event) => {
-      const key = event.key;
-  
-      // Digitos numéricos e operadores básicos
-      if (!isNaN(key) || '+-*/().'.includes(key)) {
-        appendToDisplay(key);
-      } else if (key === 'Enter') {
-        // Enter -> calcula
-        calculateResult();
-      } else if (key === 'Backspace') {
-        backspace();
-      } else if (key === 'Escape') {
-        clearDisplay();
-      }
-    });
-  
-    // Expondo as funções no escopo global (caso sejam chamadas diretamente via HTML)
-    window.appendToDisplay = appendToDisplay;
-    window.clearDisplay = clearDisplay;
-    window.backspace = backspace;
-    window.calculateResult = calculateResult;
-    window.toggleDegrees = toggleDegrees;
-  });
-  
+  }
+
+  updateDisplayAndHistory(result) {
+    this.currentExpression = result.toString();
+    this.updateDisplay(result);
+    this.saveToHistory(`${this.currentExpression} = ${result}`);
+  }
+
+  saveToHistory(entry) {
+    this.history.push(entry);
+    this.customStorageManager.saveHistory(this.history);
+  }
+
+  handleCalculationError(error) {
+    Logger.error(`Calculation Error: ${error.message}`);
+    this.updateDisplay('Error');
+    return false;
+  }
+
+  toggleDegrees() {
+    this.calculator.toggleDegrees();
+    this.degRadButton.innerText = this.calculator.isDegrees ? 'Deg' : 'Rad';
+  }
+
+  onDOMReady() {
+    window.calculatorUI = {
+      appendToDisplay: this.appendToDisplay.bind(this),
+      clearDisplay: this.clearDisplay.bind(this),
+      backspace: this.backspace.bind(this),
+      calculateResult: this.calculateResult.bind(this),
+      toggleDegrees: this.toggleDegrees.bind(this)
+    };
+  }
+}
+
+class ExpressionBuilder {
+  constructor(initialExpression = '') {
+    this.expression = initialExpression;
+  }
+
+  append(value) {
+    this.expression += value;
+    return this;
+  }
+
+  build() {
+    return this.expression;
+  }
+}
+
+const calculator = new CalculatorUI();
