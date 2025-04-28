@@ -1,3 +1,6 @@
+/* Importar a fonte Inter do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
 /* Definir variáveis CSS para cores e valores reutilizáveis */
 :root {
   --primary-color: #ff85a2;
@@ -54,6 +57,7 @@ body {
   border-radius: 50%;
   border: 2px solid #ff85a2;
   margin-right: 20px;
+  border-radius: 50%; /* Torna o avatar circular */
 }
 
 /* ============================ 
@@ -64,14 +68,12 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  position: fixed;
+  position: absolute; /* Alterado de fixed para absolute */
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 80vw;
-  max-width: 1200px;
-  min-width: 800px;
-  height: auto;
+  width: 100%; /* Ajustado para ocupar 100% da largura */
+  max-width: 600px; /* Limite máximo para evitar distorções */
   padding: 20px;
   z-index: 1;
   background: rgba(0, 0, 0, 0.8);
@@ -106,8 +108,8 @@ body {
 ============================ */
 .teclado {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 15px;
+  grid-template-columns: repeat(4, 1fr); /* 4 colunas fixas */
+  gap: 10px; /* Espaçamento consistente */
   width: 100%;
   max-width: 100%;
 }
@@ -121,32 +123,71 @@ body {
   background: linear-gradient(145deg, #4d4d4d, #333);
   color: #ff85a2;
   border: none;
-  font-size: 2.5rem;
+  font-size: 1.5rem;
   font-weight: bold;
-  padding: 35px;
+  padding: 15px; /* Padding consistente */
+  height: 60px; /* Altura fixa */
+  width: 100%; /* Largura ajustável ao grid */
+  text-align: center;
   border-radius: var(--border-radius-sm);
   transition: all var(--transition-speed) ease;
-  text-align: center;
   cursor: pointer;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 /* Botões de Operações */
 .btn-operator {
-  background-color: var(--btn-operator) !important;
-  color: #000 !important;
+  background-color: #ff85a2; /* Rosa para operadores */
+  color: #000;
 }
 
 /* Botão de Igual */
 .btn-equal {
-  background-color: var(--btn-equal) !important;
-  color: #000 !important;
+  grid-column: span 2; /* Ocupa 2 colunas */
+  background-color: var(--btn-equal);
+  color: #000;
+  font-size: 1.8rem;
+  padding: 20px;
+  transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
+}
+
+.btn-equal:hover {
+  background-color: #ffd700; /* Cor de destaque mais chamativa */
+  transform: scale(1.05); /* Leve aumento no tamanho */
 }
 
 /* Botões de Ação */
 .btn-action {
-  background-color: var(--btn-action) !important;
-  color: #fff !important;
+  background-color: #ffa500; /* Laranja discreto para ações */
+  color: #fff;
+}
+
+/* Botões de funções (Rad, Deg, sin, etc.) */
+.btn-funcao {
+  background-color: #66cc66; /* Verde discreto para especiais */
+  color: #fff;
+}
+
+/* Botões de operadores (X!, %, ÷, etc.) */
+.btn-operador {
+  background-color: #55585d;
+  color: #fca9b9;
+}
+
+/* Botões numéricos (0-9) */
+.btn-numero {
+  background-color: #6c6c6c; /* Cinza para números */
+  color: #fff;
+}
+
+/* Estilo geral para os botões */
+.btn {
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  padding: 10px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 /* Efeitos de Hover e Active */
@@ -156,7 +197,7 @@ body {
 }
 
 .btn-calc:active {
-  transform: translateY(1px);
+  transform: scale(0.98); /* Redução de escala no clique */
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
 }
 
@@ -187,27 +228,60 @@ body {
 
 @media (max-width: 768px) {
   .calculadora {
-    width: 95vw;
-    min-width: unset;
-    margin: 20px auto;
+    width: 90%; /* Ajuste para ocupar 90% da largura */
+    max-width: 400px; /* Limite máximo para dispositivos menores */
     padding: 15px;
   }
   
   .teclado {
-    gap: 10px;
+    grid-template-columns: repeat(4, 1fr); /* Mantém 4 colunas */
+    gap: 8px;
   }
 
   #display {
-    font-size: 2rem;
-    padding: 14px;
-  }
-
-  .teclado {
-    grid-template-columns: repeat(4, 1fr);
+    font-size: 1.8rem; /* Reduzido para telas menores */
+    padding: 10px;
   }
 
   .btn-calc {
-    font-size: 1.4rem;
-    padding: 16px;
+    font-size: 1.2rem;
+    padding: 12px;
+    height: 50px;
+  }
+
+  .btn-equal {
+    font-size: 1.5rem;
+    padding: 15px;
+  }
+}
+
+/* ============================ 
+   Responsividade Extrema (< 400px)
+============================ */
+@media (max-width: 400px) {
+  .calculadora {
+    width: 95%; /* Ajuste para ocupar quase toda a largura */
+    max-width: 300px; /* Limite máximo ainda menor */
+    padding: 10px;
+  }
+
+  .teclado {
+    gap: 8px;
+    grid-template-columns: repeat(3, 1fr); /* Ajuste para 3 colunas */
+  }
+
+  #display {
+    font-size: 1.5rem; /* Reduzido ainda mais */
+    padding: 8px;
+  }
+
+  .btn-calc {
+    font-size: 1rem; /* Botões ainda menores */
+    padding: 10px;
+    border-radius: 10px; /* Redução do border-radius */
+  }
+
+  .btn-funcao {
+    font-size: 0.9rem; /* Redução do tamanho da fonte */
   }
 }

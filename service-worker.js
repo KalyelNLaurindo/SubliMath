@@ -9,26 +9,34 @@ const urlsToCache = [
 
   // CSS
   './CSS/style.css',
-  // Se estiver usando Bootstrap via CDN, não é comum fazer cache do CDN.
-  // Mas se tiver bootstrap local, adicione: './CSS/bootstrap.min.css',
 
   // JS
   './js/calculator.js',
   './js/storage.js',
   './js/ui.js',
+  './js/keyboard.js', // Novo arquivo adicionado
+  './tests/test.js', // Novo arquivo adicionado
 
   // Ícones ou imagens
   './assets/favicon.png',
-  // Ajuste/adicione ícones variados para PWA (ex.: icons/icon-192x192.png, etc.)
-  // './icons/icon-192x192.png',
-  // './icons/icon-512x512.png'
+  './assets/avatar.png',
+  './icons/icon-192x192.png', // Novo ícone adicionado
+  './icons/icon-512x512.png', // Novo ícone adicionado
+
+  // Página offline
+  './offline.html' // Página offline adicionada
 ];
 
 // Instalação do Service Worker (cache dos arquivos essenciais)
-self.addEventListener('install', event => {
+self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(urlsToCache);
+    caches.open('my-cache').then((cache) => {
+      return cache.addAll([
+        '/index.html',
+        '/styles.css',
+        '/script.js',
+        // Certifique-se de que todos os arquivos listados aqui existem
+      ]);
     })
   );
 });
@@ -55,7 +63,12 @@ self.addEventListener('fetch', event => {
     caches.match(event.request).then(response => {
       // Retorna a resposta do cache se disponível,
       // caso contrário busca na rede.
-      return response || fetch(event.request);
+      return response || fetch(event.request).catch(() => {
+        // Em caso de erro no fetch, retorna a página offline
+        if (event.request.mode === 'navigate') {
+          return caches.match('./offline.html');
+        }
+      });
     })
   );
 });
